@@ -4,7 +4,6 @@ import com.pluralsight.models.*;
 import com.pluralsight.util.ReceiptWriter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 

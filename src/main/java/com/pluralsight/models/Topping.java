@@ -17,17 +17,12 @@ public class Topping {
         double price = 0;
 
         if (type.equalsIgnoreCase("meat")) {
-            switch (sandwichSize) {
-                case 4:
-                    price = 1.00;
-                    break;
-                case 8:
-                    price = 2.00;
-                    break;
-                case 12:
-                    price = 3.00;
-                    break;
-            }
+            price = switch (sandwichSize) {
+                case 4 -> 1.00;
+                case 8 -> 2.00;
+                case 12 -> 3.00;
+                default -> price;
+            };
 
             if (extra) {
                 switch (sandwichSize) {
@@ -46,17 +41,12 @@ public class Topping {
 
         else if (type.equalsIgnoreCase("cheese")) {
 
-            switch (sandwichSize) {
-                case 4:
-                    price = .75;
-                    break;
-                case 8:
-                    price = 1.50;
-                    break;
-                case 12:
-                    price = 2.25;
-                    break;
-            }
+            price = switch (sandwichSize) {
+                case 4 -> .75;
+                case 8 -> 1.50;
+                case 12 -> 2.25;
+                default -> price;
+            };
 
             if (extra) {
                 switch (sandwichSize) {
