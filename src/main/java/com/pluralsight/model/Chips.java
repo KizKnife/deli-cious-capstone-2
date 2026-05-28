@@ -1,4 +1,4 @@
-package com.pluralsight.models;
+package com.pluralsight.model;
 
 public class Chips {
     private String chipFlavor;

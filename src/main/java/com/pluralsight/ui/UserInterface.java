@@ -1,6 +1,6 @@
 package com.pluralsight.ui;
 
-import com.pluralsight.models.*;
+import com.pluralsight.model.*;
 import com.pluralsight.util.ReceiptWriter;
 
 import java.util.ArrayList;
@@ -84,15 +84,116 @@ public class UserInterface {
     }
 
     public void addSandwich(Order order) {
+        int sandwichSize = 0;
+        String breadType = null;
+        boolean isToasted;
         List<Topping> toppings = new ArrayList<>();
-        toppings.add(new Topping("steak", "meat", false, 12));
 
-        Sandwich sandwich = new Sandwich(8, "white", true, new ArrayList<>(toppings));
+        sandwichSize = selectSandwichSize();
+        breadType = selectBreadType();
+        isToasted = selectToasted();
 
-        order.addSandwich(sandwich);
 
-        System.out.println("Sandwich has been added.");
+        if (sandwichSize != 0) {
+            toppings.add(new Topping("steak", "meat", false, 12));
+
+            Sandwich sandwich = new Sandwich(sandwichSize, breadType, isToasted, new ArrayList<>(toppings));
+
+            order.addSandwich(sandwich);
+
+            System.out.println("Sandwich has been added.");
+        }
+
+
     }
+
+    public int selectSandwichSize() {
+        while (true) {
+            System.out.printf(
+                    "1. 4\"%n" +
+                    "2. 8\"%n" +
+                    "3. 12\"%n" +
+                    "0. Exit%n" +
+                    "Sandwich Size: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    System.out.println("White bread selected!");
+                    return 4;
+                }
+                case "2" -> {
+                    System.out.println("Wheat bread selected!");
+                    return 8;
+                }
+                case "3" -> {
+                    System.out.println("Rye bread selected!");
+                    return 12;
+                }
+                case "0" -> {
+                    System.out.printf("Exiting...%n");
+                    return 0;
+                }
+                default -> System.out.printf("Invalid option%n");
+            }
+        }
+    }
+
+    public String selectBreadType() {
+        while (true) {
+            System.out.printf(
+                    "1. White%n" +
+                    "2. Wheat%n" +
+                    "3. Rye%n" +
+                    "4. Wrap%n" +
+                    "Bread type: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    System.out.println("White bread selected!");
+                    return "white";
+                }
+                case "2" -> {
+                    System.out.println("Wheat bread selected!");
+                    return "wheat";
+                }
+                case "3" -> {
+                    System.out.println("Rye bread selected!");
+                    return "Rye";
+                }
+                case "4" -> {
+                    System.out.println("Wrap selected!");
+                    return "wrap";
+                }
+                default -> System.out.printf("Invalid option%n");
+            }
+        }
+    }
+
+    public boolean selectToasted() {
+        while (true) {
+            System.out.printf(
+                    "1. Yes%n" +
+                    "2. No%n" +
+                    "Toasted : "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    System.out.println("Toasted selected!");
+                    return true;
+                }
+                case "2" -> {
+                    System.out.println("Not toasted selected!");
+                    return false;
+                }
+                default -> System.out.printf("Invalid option%n");
+            }
+        }
+    }
+
+
 
     public void addDrink(Order order) {
         Drink drink = new Drink("medium", "coca cola");

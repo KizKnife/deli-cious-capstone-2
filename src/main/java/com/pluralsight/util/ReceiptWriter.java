@@ -1,6 +1,6 @@
 package com.pluralsight.util;
 
-import com.pluralsight.models.Order;
+import com.pluralsight.model.Order;
 
 import java.io.FileWriter;
 import java.io.IOException;

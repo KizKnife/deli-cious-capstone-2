@@ -1,4 +1,4 @@
-package com.pluralsight.models;
+package com.pluralsight.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,12 @@ public class Sandwich {
         this.breadType = breadType;
         this.toasted = toasted;
         this.toppings = toppings;
+    }
+
+    public Sandwich(int size, String breadType, boolean toasted) {
+        this.size = size;
+        this.breadType = breadType;
+        this.toasted = toasted;
     }
 
     public void addTopping(Topping topping) {
