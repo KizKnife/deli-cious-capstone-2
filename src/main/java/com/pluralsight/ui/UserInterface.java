@@ -61,7 +61,7 @@ public class UserInterface {
                     addSandwich(order);
                     break;
                 case 2:
-                    //addSandwich(order);
+                    addSpecialtySandwich(order);
                     break;
                 case 3:
                     addDrink(order);
@@ -437,7 +437,7 @@ public class UserInterface {
 
         System.out.printf(
                 "%n0. Exit%n" +
-                "Choose topping to remove: ");
+                        "Choose topping to remove: ");
 
         try {
             int index = Integer.parseInt(scanner.nextLine()) - 1;
@@ -458,6 +458,55 @@ public class UserInterface {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input");
         }
+    }
+
+    private void addSpecialtySandwich(Order order) {
+
+        System.out.println("\n===== SPECIALTY SANDWICHES =====");
+        System.out.println("1. BLT");
+        System.out.println("2. Philly Cheese Steak");
+        System.out.println("0. Exit");
+        System.out.print("Choose: ");
+
+        String choice = scanner.nextLine();
+
+        Sandwich sandwich;
+
+        switch (choice) {
+
+            case "1" -> {
+                List<Topping> toppings = new ArrayList<>();
+                toppings.add(new Topping("bacon", "meat", false, 8));
+                toppings.add(new Topping("cheddar", "cheese", false, 8));
+                toppings.add(new Topping("lettuce", "regular", false, 8));
+                toppings.add(new Topping("tomato", "regular", false, 8));
+                toppings.add(new Topping("ranch", "sauce", false, 8));
+
+                sandwich = new Sandwich(8, "white", true, new ArrayList<>(toppings));
+            }
+
+            case "2" -> {
+                List<Topping> toppings = new ArrayList<>();
+                toppings.add(new Topping("steak", "meat", false, 8));
+                toppings.add(new Topping("american", "cheese", false, 8));
+                toppings.add(new Topping("peppers", "regular", false, 8));
+                toppings.add(new Topping("mayo", "sauce", false, 8));
+
+                sandwich = new Sandwich(8, "white", true, new ArrayList<>(toppings));
+            }
+
+            case "0" -> {
+                return;
+            }
+
+            default -> {
+                System.out.println("Invalid option");
+                return;
+            }
+        }
+
+        order.addSandwich(sandwich);
+        System.out.println("Specialty sandwich added.");
     }
 
     public void addDrink(Order order) {
@@ -508,8 +557,8 @@ public class UserInterface {
         while (true) {
             System.out.printf(
                     "%n1. Add Chips%n" +
-                    "0. Exit%n" +
-                    "Chips: "
+                            "0. Exit%n" +
+                            "Chips: "
             );
 
             switch (scanner.nextLine()) {
@@ -552,7 +601,7 @@ public class UserInterface {
     }
 
     public void checkout(Order order) {
-        if (!order.getSandwiches().isEmpty() && !order.getDrinks().isEmpty() && !order.getChips().isEmpty()) {
+        if (!order.getSandwiches().isEmpty() || !order.getDrinks().isEmpty() || !order.getChips().isEmpty()) {
             System.out.print("\n===== CHECKOUT =====");
 
             for (Sandwich s : order.getSandwiches()) {
