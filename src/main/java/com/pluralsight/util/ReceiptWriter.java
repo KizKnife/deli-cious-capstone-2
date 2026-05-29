@@ -13,7 +13,7 @@ public class ReceiptWriter {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 
-        String fileName = now.format(formatter) + ".txt";
+        String fileName = "receipts/" + now.format(formatter) + ".txt";
 
         try (FileWriter writer = new FileWriter(fileName)) {
 

@@ -14,7 +14,6 @@ public class UserInterface {
     private final Scanner scanner = new Scanner(System.in);
 
     public void display() {
-
         while (true) {
             System.out.printf(
                     "Commands:%n" +
@@ -35,22 +34,24 @@ public class UserInterface {
     }
 
     public void createNewOrder() {
-
         Order order = new Order();
 
         boolean ordering = true;
 
         while (ordering) {
 
-            System.out.println("\n===== ORDER MENU =====");
-            System.out.println("1. Add Sandwich");
-            System.out.println("2. Add Drink");
-            System.out.println("3. Add Chips");
-            System.out.println("4. Check Order");
-            System.out.println("5. Checkout");
-            System.out.println("0. Cancel Order");
+            System.out.printf(
+                    "\n===== ORDER MENU =====%n" +
+                    "1. Add Sandwich%n" +
+                    "2. Add Speciality Sandwich%n" +
+                    "3. Add Drink%n" +
+                    "4. Add Chips%n" +
+                    "5. Check Order%n" +
+                    "6. Checkout%n" +
+                    "0. Cancel Order%n" +
+                    "Choose an option: "
+            );
 
-            System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -59,29 +60,26 @@ public class UserInterface {
                 case 1:
                     addSandwich(order);
                     break;
-
                 case 2:
+                    //addSandwich(order);
+                    break;
+                case 3:
                     addDrink(order);
                     break;
-
-                case 3:
+                case 4:
                     addChips(order);
                     break;
-
-                case 4:
+                case 5:
                     checkOrder(order);
                     break;
-
-                case 5:
+                case 6:
                     checkout(order);
                     ordering = false;
                     break;
-
                 case 0:
                     System.out.printf("Order cancelled%n%n");
                     ordering = false;
                     break;
-
                 default:
                     System.out.printf("Invalid option%n");
             }
@@ -121,23 +119,20 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     System.out.println("4\" selected!");
                     return 4;
-                }
-                case "2" -> {
+                case "2":
                     System.out.println("8\" selected!");
                     return 8;
-                }
-                case "3" -> {
+                case "3" :
                     System.out.println("12\" selected!");
                     return 12;
-                }
-                case "0" -> {
+                case "0":
                     System.out.printf("Exiting...%n");
                     return 0;
-                }
-                default -> System.out.printf("Invalid option%n");
+                default:
+                    System.out.printf("Invalid option%n");
             }
         }
     }
@@ -153,23 +148,20 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     System.out.println("White bread selected!");
                     return "white";
-                }
-                case "2" -> {
+                case "2":
                     System.out.println("Wheat bread selected!");
                     return "wheat";
-                }
-                case "3" -> {
+                case "3":
                     System.out.println("Rye bread selected!");
                     return "Rye";
-                }
-                case "4" -> {
+                case "4":
                     System.out.println("Wrap selected!");
                     return "wrap";
-                }
-                default -> System.out.printf("Invalid option%n");
+                default:
+                    System.out.printf("Invalid option%n");
             }
         }
     }
@@ -183,15 +175,14 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     System.out.println("Toasted selected!");
                     return true;
-                }
-                case "2" -> {
+                case "2":
                     System.out.println("Not toasted selected!");
                     return false;
-                }
-                default -> System.out.printf("Invalid option%n");
+                default:
+                    System.out.printf("Invalid option%n");
             }
         }
     }
@@ -208,22 +199,19 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     Topping topping = selectTopping(sandwichSize);
 
                     if (topping != null) {
                         selectedToppings.add(topping);
                     }
-                }
-
-                case "2" -> removeTopping(selectedToppings);
-
-                case "0" -> {
+                case "2":
+                    removeTopping(selectedToppings);
+                case "0":
                     System.out.println("Exiting...");
                     return selectedToppings;
-                }
-
-                default -> System.out.println("Invalid option");
+                default:
+                    System.out.println("Invalid option");
             }
         }
     }
@@ -418,11 +406,9 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     return "au_jus";
-                }
-
-                case "2" -> {
+                case "2":
                     String sauce = selectSauce();
 
                     if (sauce.equals("exit")) {
@@ -430,13 +416,10 @@ public class UserInterface {
                     }
 
                     return "side (" + sauce + ")";
-                }
-
-                case "0" -> {
+                case "0":
                     return "exit";
-                }
-
-                default -> System.out.println("Invalid option");
+                default:
+                    System.out.println("Invalid option");
             }
         }
     }
@@ -491,29 +474,20 @@ public class UserInterface {
             );
 
             switch (scanner.nextLine()) {
-                case "1" -> {
+                case "1":
                     drinkSize = "small";
                     break;
-                }
-
-                case "2" -> {
+                case "2":
                     drinkSize = "medium";
                     break;
-                }
-
-                case "3" -> {
+                case "3":
                     drinkSize = "large";
                     break;
-                }
-
-                case "0" -> {
+                case "0":
                     return;
-                }
-
-                default -> {
+                default:
                     System.out.println("Invalid option");
                     continue;
-                }
             }
 
             break;
@@ -540,7 +514,7 @@ public class UserInterface {
 
             switch (scanner.nextLine()) {
 
-                case "1" -> {
+                case "1":
                     System.out.print("\nChip flavor: ");
                     String chipsType = scanner.nextLine();
 
@@ -550,13 +524,10 @@ public class UserInterface {
 
                     System.out.println("Chips have been added.");
                     return;
-                }
-
-                case "0" -> {
+                case "0":
                     return;
-                }
-
-                default -> System.out.println("Invalid option");
+                default:
+                    System.out.println("Invalid option");
             }
         }
     }
@@ -641,27 +612,4 @@ public class UserInterface {
         return chips;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("===== ORDER SUMMARY =====\n");
-
-        sb.append("\n--- Sandwiches ---\n");
-        for (Sandwich s : sandwiches) {
-            sb.append(s).append("\n\n");
-        }
-
-        sb.append("\n--- Drinks ---\n");
-        for (Drink d : drinks) {
-            sb.append(d).append("\n");
-        }
-
-        sb.append("\n--- Chips ---\n");
-        for (Chips c : chips) {
-            sb.append(c).append("\n");
-        }
-
-        return sb.toString();
-    }
 }
