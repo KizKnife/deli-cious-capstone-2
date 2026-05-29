@@ -137,6 +137,44 @@ public class MenuService {
         }
     }
 
+    // Allows user to add or remove toppings for specialty sandwiches, returns a list of selected toppings
+    public List<Topping> selectToppings(int sandwichSize, List<Topping> currentToppings) {
+
+        List<Topping> selectedToppings = new ArrayList<>(currentToppings);
+
+        System.out.printf("%n===== TOPPING =====");
+
+        while (true) {
+            System.out.printf(
+                    "%n1. Add Topping%n" +
+                            "2. Remove Topping%n" +
+                            "0. Exit%n" +
+                            "Toppings: "
+            );
+
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1" -> {
+                    Topping topping = selectTopping(sandwichSize);
+
+                    if (topping != null) {
+                        selectedToppings.add(topping);
+                    }
+                }
+
+                case "2" -> removeTopping(selectedToppings);
+
+                case "0" -> {
+                    System.out.println("Exiting...");
+                    return selectedToppings;
+                }
+
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
     // Prompts user through selecting a toppings, returns a Topping object.
     // Includes category, type, and/or extra options
     private Topping selectTopping(int sandwichSize) {

@@ -116,6 +116,7 @@ public class UserInterface {
     }
 
     // Adds prebuilt specialty sandwich to the order using a registry of SandwichBuilder
+    // Then, lets user add/remove toppings from specialty sandwich
     private void addSpecialtySandwich(Order order) {
 
         System.out.println("\n===== SPECIALTY SANDWICHES =====");
@@ -133,8 +134,24 @@ public class UserInterface {
             return;
         }
 
-        Sandwich sandwich = builder.build();
-        order.addSandwich(sandwich);
+        Sandwich specialtySandwich = builder.build();
+
+        // Allow topping customization
+        List<Topping> updatedToppings =
+                menuService.selectToppings(
+                        specialtySandwich.getSize(),
+                        specialtySandwich.getToppings()
+                );
+
+        Sandwich customizedSandwich =
+                sandwichService.createSandwich(
+                        specialtySandwich.getSize(),
+                        specialtySandwich.getBreadType(),
+                        specialtySandwich.isToasted(),
+                        updatedToppings
+                );
+
+        order.addSandwich(customizedSandwich);
 
         System.out.println("Specialty sandwich added.");
     }
