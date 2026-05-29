@@ -61,4 +61,48 @@ public class Order {
     public List<Chips> getChips() {
         return chips;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+
+        output.append("===== CHECKOUT =====");
+
+        boolean hasItems = false;
+
+        for (Sandwich sandwich : getSandwiches()) {
+            if (!hasItems) {
+                output.append("\n\n");
+                hasItems = true;
+            } else {
+                output.append("\n");
+            }
+
+            output.append(sandwich);
+        }
+
+        for (Drink drink : getDrinks()) {
+            if (!hasItems) {
+                output.append("\n\n");
+                hasItems = true;
+            } else {
+                output.append("\n\n");
+            }
+
+            output.append(drink);
+        }
+
+        for (Chips chip : getChips()) {
+            if (!hasItems) {
+                output.append("\n\n");
+                hasItems = true;
+            } else {
+                output.append("\n\n");
+            }
+
+            output.append(chip);
+        }
+
+        return output.toString();
+    }
 }

@@ -18,8 +18,8 @@ public class UserInterface {
         while (true) {
             System.out.printf(
                     "Commands:%n" +
-                            "1 - New Order%n" +
-                            "0 - Exit%n" +
+                            "1. New Order%n" +
+                            "0. Exit%n" +
                             "What do you want to do: "
             );
 
@@ -29,7 +29,7 @@ public class UserInterface {
                     System.out.printf("%nThank you for being our valued customer!%n");
                     return;
                 }
-                default -> System.out.printf("Invalid option%n");
+                default -> System.out.printf("Invalid option%n%n");
             }
         }
     }
@@ -43,11 +43,12 @@ public class UserInterface {
         while (ordering) {
 
             System.out.println("\n===== ORDER MENU =====");
-            System.out.println("1) Add Sandwich");
-            System.out.println("2) Add Drink");
-            System.out.println("3) Add Chips");
-            System.out.println("4) Checkout");
-            System.out.println("0) Cancel Order");
+            System.out.println("1. Add Sandwich");
+            System.out.println("2. Add Drink");
+            System.out.println("3. Add Chips");
+            System.out.println("4. Check Order");
+            System.out.println("5. Checkout");
+            System.out.println("0. Cancel Order");
 
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
@@ -68,17 +69,21 @@ public class UserInterface {
                     break;
 
                 case 4:
+                    checkOrder(order);
+                    break;
+
+                case 5:
                     checkout(order);
                     ordering = false;
                     break;
 
                 case 0:
-                    System.out.println("Order cancelled.");
+                    System.out.printf("Order cancelled%n%n");
                     ordering = false;
                     break;
 
                 default:
-                    System.out.println("Invalid option.");
+                    System.out.printf("Invalid option%n");
             }
         }
     }
@@ -92,11 +97,9 @@ public class UserInterface {
         sandwichSize = selectSandwichSize();
         breadType = selectBreadType();
         isToasted = selectToasted();
-
+        toppings = selectToppings(sandwichSize);
 
         if (sandwichSize != 0) {
-            toppings.add(new Topping("steak", "meat", false, 12));
-
             Sandwich sandwich = new Sandwich(sandwichSize, breadType, isToasted, new ArrayList<>(toppings));
 
             order.addSandwich(sandwich);
@@ -110,7 +113,7 @@ public class UserInterface {
     public int selectSandwichSize() {
         while (true) {
             System.out.printf(
-                    "1. 4\"%n" +
+                    "%n1. 4\"%n" +
                     "2. 8\"%n" +
                     "3. 12\"%n" +
                     "0. Exit%n" +
@@ -119,15 +122,15 @@ public class UserInterface {
 
             switch (scanner.nextLine()) {
                 case "1" -> {
-                    System.out.println("White bread selected!");
+                    System.out.println("4\" selected!");
                     return 4;
                 }
                 case "2" -> {
-                    System.out.println("Wheat bread selected!");
+                    System.out.println("8\" selected!");
                     return 8;
                 }
                 case "3" -> {
-                    System.out.println("Rye bread selected!");
+                    System.out.println("12\" selected!");
                     return 12;
                 }
                 case "0" -> {
@@ -142,7 +145,7 @@ public class UserInterface {
     public String selectBreadType() {
         while (true) {
             System.out.printf(
-                    "1. White%n" +
+                    "%n1. White%n" +
                     "2. Wheat%n" +
                     "3. Rye%n" +
                     "4. Wrap%n" +
@@ -174,9 +177,9 @@ public class UserInterface {
     public boolean selectToasted() {
         while (true) {
             System.out.printf(
-                    "1. Yes%n" +
+                    "%n1. Yes%n" +
                     "2. No%n" +
-                    "Toasted : "
+                    "Toasted: "
             );
 
             switch (scanner.nextLine()) {
@@ -193,10 +196,333 @@ public class UserInterface {
         }
     }
 
+    public List<Topping> selectToppings(int sandwichSize) {
+        List<Topping> selectedToppings = new ArrayList<>();
 
+        while (true) {
+            System.out.printf(
+                    "%n1. Add Topping%n" +
+                    "2. Remove Topping%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    Topping topping = selectTopping(sandwichSize);
+
+                    if (topping != null) {
+                        selectedToppings.add(topping);
+                    }
+                }
+
+                case "2" -> removeTopping(selectedToppings);
+
+                case "0" -> {
+                    System.out.println("Exiting...");
+                    return selectedToppings;
+                }
+
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private Topping selectTopping(int sandwichSize) {
+        String toppingType = selectToppingCategory();
+
+        if (toppingType.equals("exit")) {
+            return null;
+        }
+
+        String toppingName = switch (toppingType) {
+            case "meat" -> selectMeat();
+            case "cheese" -> selectCheese();
+            case "regular" -> selectRegularTopping();
+            case "sauce" -> selectSauce();
+            case "side" -> selectSide();
+            default -> "exit";
+        };
+
+        if (toppingName.equals("exit")) {
+            return null;
+        }
+
+        boolean isExtra = false;
+
+        if (toppingType.equals("meat") || toppingType.equals("cheese")) {
+            isExtra = askExtra();
+        }
+
+        return new Topping(
+                toppingName,
+                toppingType,
+                isExtra,
+                sandwichSize
+        );
+    }
+
+    private String selectToppingCategory() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Meats%n" +
+                    "2. Cheese%n" +
+                    "3. Regular Toppings%n" +
+                    "4. Sauces%n" +
+                    "5. Sides%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return "meat"; }
+                case "2" -> { return "cheese"; }
+                case "3" -> { return "regular"; }
+                case "4" -> { return "sauce"; }
+                case "5" -> { return "side"; }
+                case "0" -> { return "exit"; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private String selectMeat() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Steak%n" +
+                    "2. Ham%n" +
+                    "3. Salami%n" +
+                    "4. Roast Beef%n" +
+                    "5. Chicken%n" +
+                    "6. Bacon%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return "steak"; }
+                case "2" -> { return "ham"; }
+                case "3" -> { return "salami"; }
+                case "4" -> { return "roast beef"; }
+                case "5" -> { return "chicken"; }
+                case "6" -> { return "bacon"; }
+                case "0" -> { return "exit"; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private boolean askExtra() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Yes%n" +
+                    "2. No%n" +
+                    "Extra: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return true; }
+                case "2" -> { return false; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private String selectCheese() {
+        while (true) {
+            System.out.printf(
+                    "%n1. American%n" +
+                    "2. Provolone%n" +
+                    "3. Cheddar%n" +
+                    "4. Swiss%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return "american"; }
+                case "2" -> { return "provolone"; }
+                case "3" -> { return "cheddar"; }
+                case "4" -> { return "swiss"; }
+                case "0" -> { return "exit"; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private String selectRegularTopping() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Lettuce%n" +
+                    "2. Peppers%n" +
+                    "3. Onions%n" +
+                    "4. Tomatoes%n" +
+                    "5. Jalapeños%n" +
+                    "6. Cucumbers%n" +
+                    "7. Pickles%n" +
+                    "8. Guacamole%n" +
+                    "9. Mushrooms%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return "lettuce"; }
+                case "2" -> { return "peppers"; }
+                case "3" -> { return "onions"; }
+                case "4" -> { return "tomatoes"; }
+                case "5" -> { return "jalapeños"; }
+                case "6" -> { return "cucumbers"; }
+                case "7" -> { return "pickles"; }
+                case "8" -> { return "guacamole"; }
+                case "9" -> { return "mushrooms"; }
+                case "0" -> { return "exit"; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private String selectSauce() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Mayo%n" +
+                    "2. Mustard%n" +
+                    "3. Ketchup%n" +
+                    "4. Ranch%n" +
+                    "5. Thousand Islands%n" +
+                    "6. Vinaigrette%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> { return "mayo"; }
+                case "2" -> { return "mustard"; }
+                case "3" -> { return "ketchup"; }
+                case "4" -> { return "Ranch"; }
+                case "5" -> { return "thousand_islands"; }
+                case "6" -> { return "vinaigrette"; }
+                case "0" -> { return "exit"; }
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private String selectSide() {
+        while (true) {
+            System.out.printf(
+                    "%n1. Au jus%n" +
+                    "2. Sauce%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    return "au_jus";
+                }
+
+                case "2" -> {
+                    String sauce = selectSauce();
+
+                    if (sauce.equals("exit")) {
+                        continue;
+                    }
+
+                    return "side (" + sauce + ")";
+                }
+
+                case "0" -> {
+                    return "exit";
+                }
+
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
+
+    private void removeTopping(List<Topping> toppings) {
+        if (toppings.isEmpty()) {
+            System.out.printf("%nNo toppings to remove%n");
+            return;
+        }
+
+        System.out.printf("%nToppings:%n");
+        for (int i = 0; i < toppings.size(); i++) {
+            System.out.println((i + 1) + ". " + toppings.get(i));
+        }
+
+        System.out.printf(
+                "%n0. Exit%n" +
+                "Choose topping to remove: ");
+
+        try {
+            int index = Integer.parseInt(scanner.nextLine()) - 1;
+
+            while (true) {
+                if (index >= 0 && index < toppings.size()) {
+                    toppings.remove(index);
+                    System.out.println("Topping removed");
+                    return;
+                } else if (index == -1) {
+                    System.out.println("Exiting...");
+                    return;
+                } else {
+                    System.out.println("Invalid selection");
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+        }
+    }
 
     public void addDrink(Order order) {
-        Drink drink = new Drink("medium", "coca cola");
+        String drinkSize = "";
+        String drinkType = "";
+
+        while (true) {
+            System.out.printf(
+                    "%n1. Small%n" +
+                            "2. Medium%n" +
+                            "3. Large%n" +
+                            "0. Exit%n" +
+                            "Drinks: "
+            );
+
+            switch (scanner.nextLine()) {
+                case "1" -> {
+                    drinkSize = "small";
+                    break;
+                }
+
+                case "2" -> {
+                    drinkSize = "medium";
+                    break;
+                }
+
+                case "3" -> {
+                    drinkSize = "large";
+                    break;
+                }
+
+                case "0" -> {
+                    return;
+                }
+
+                default -> {
+                    System.out.println("Invalid option");
+                    continue;
+                }
+            }
+
+            break;
+        }
+
+        System.out.print("\nFlavor: ");
+        drinkType = scanner.nextLine();
+
+        Drink drink = new Drink(drinkSize, drinkType);
 
         order.addDrink(drink);
 
@@ -204,46 +530,102 @@ public class UserInterface {
     }
 
     public void addChips(Order order) {
-        Chips chips = new Chips("lays");
 
-        order.addChip(chips);
+        while (true) {
+            System.out.printf(
+                    "%n1. Add Chips%n" +
+                    "0. Exit%n" +
+                    "Chips: "
+            );
 
-        System.out.println("Chips has been added.");
+            switch (scanner.nextLine()) {
+
+                case "1" -> {
+                    System.out.print("\nChip flavor: ");
+                    String chipsType = scanner.nextLine();
+
+                    Chips chips = new Chips(chipsType);
+
+                    order.addChip(chips);
+
+                    System.out.println("Chips have been added.");
+                    return;
+                }
+
+                case "0" -> {
+                    return;
+                }
+
+                default -> System.out.println("Invalid option");
+            }
+        }
     }
 
-    public void checkout(Order order) {
+    public void checkOrder(Order order) {
+        System.out.print("\n===== ORDER =====");
 
-        System.out.println("\n===== CHECKOUT =====");
-
-        System.out.println(order);
         for (Sandwich s : order.getSandwiches()) {
+            System.out.println();
             System.out.println(s);
         }
 
-        System.out.printf("TOTAL: $%.2f%n", order.calculateTotal());
+        for (Drink d : order.getDrinks()) {
+            System.out.println();
+            System.out.println(d);
+        }
 
-        System.out.println("\n1) Confirm Order");
-        System.out.println("0) Cancel Order");
-        System.out.print("Choice: ");
+        for (Chips c : order.getChips()) {
+            System.out.println();
+            System.out.println(c);
+        }
+    }
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+    public void checkout(Order order) {
+        if (!order.getSandwiches().isEmpty() && !order.getDrinks().isEmpty() && !order.getChips().isEmpty()) {
+            System.out.print("\n===== CHECKOUT =====");
 
-        switch (choice) {
-
-            case 1 -> {
-                ReceiptWriter writer = new ReceiptWriter();
-                writer.writeReceipt(order);
-                System.out.println("Order confirmed! Receipt saved.");
+            for (Sandwich s : order.getSandwiches()) {
+                System.out.println();
+                System.out.println(s);
             }
 
-            case 0 -> {
-                System.out.println("Order cancelled.");
+            for (Drink d : order.getDrinks()) {
+                System.out.println();
+                System.out.println(d);
             }
 
-            default -> {
-                System.out.println("Invalid choice. Returning to menu.");
+            for (Chips c : order.getChips()) {
+                System.out.println();
+                System.out.println(c);
             }
+
+            System.out.printf("%nTOTAL: $%.2f%n", order.calculateTotal());
+
+            System.out.println("\n1) Confirm Order");
+            System.out.println("0) Cancel Order");
+            System.out.print("Choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+
+                case 1 -> {
+                    ReceiptWriter writer = new ReceiptWriter();
+                    writer.writeReceipt(order);
+                    System.out.printf("Order confirmed! Receipt saved%n%n");
+                }
+
+                case 0 -> {
+                    System.out.printf("Order cancelled%n");
+                }
+
+                default -> {
+                    System.out.printf("Invalid choice. Returning to menu%n");
+                }
+            }
+        } else {
+            System.out.printf("Error! Order must contain chips or a drink!%n%n");
         }
     }
 
