@@ -18,15 +18,15 @@ public class MenuService {
     // Prompts user to select sandwich size (4", 8", or 12"), returns sandwich size
     // Returns 0 if the user exits
     public int selectSandwichSize() {
-        System.out.printf("\n===== SIZE =====");
+        System.out.printf("%n===== SIZE =====");
 
         while (true) {
             System.out.printf(
                     "%n1. 4\"%n" +
-                            "2. 8\"%n" +
-                            "3. 12\"%n" +
-                            "0. Exit%n" +
-                            "Sandwich Size: "
+                    "2. 8\"%n" +
+                    "3. 12\"%n" +
+                    "0. Exit%n" +
+                    "Sandwich Size: "
             );
 
             switch (scanner.nextLine()) {
@@ -50,7 +50,7 @@ public class MenuService {
 
     // Prompts user to select a bread type, returns bread type
     public String selectBreadType() {
-        System.out.printf("\n===== BREAD TYPE =====");
+        System.out.printf("%n===== BREAD TYPE =====");
 
         while (true) {
             System.out.printf(
@@ -82,7 +82,7 @@ public class MenuService {
 
     // Prompts user to select if sandwich should be toasted, returns true or false
     public boolean selectToasted() {
-        System.out.printf("\n===== TOASTED =====");
+        System.out.printf("%n===== TOASTED =====");
 
         while (true) {
             System.out.printf(
@@ -108,7 +108,7 @@ public class MenuService {
     public List<Topping> selectToppings(int sandwichSize) {
         List<Topping> selectedToppings = new ArrayList<>();
 
-        System.out.printf("\n===== TOPPING =====");
+        System.out.printf("%n===== TOPPING =====");
 
         while (true) {
             System.out.printf(

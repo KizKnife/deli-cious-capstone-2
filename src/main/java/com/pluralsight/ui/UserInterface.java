@@ -144,7 +144,7 @@ public class UserInterface {
         String drinkSize;
         String drinkType;
 
-        System.out.printf("\n===== DRINK =====");
+        System.out.printf("%n===== DRINK =====");
 
         while (true) {
             System.out.printf(
@@ -185,7 +185,7 @@ public class UserInterface {
 
     // User input chips flavor, creates chips using ChipsService, adds to order
     public void addChips(Order order) {
-        System.out.printf("\n===== CHIPS =====");
+        System.out.printf("%n===== CHIPS =====");
 
         while (true) {
             System.out.printf(
