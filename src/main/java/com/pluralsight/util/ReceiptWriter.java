@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ReceiptWriter {
+    // Creates a timestamped receipt file
+    // Writes full order details with total price to text file in "receipts" folder
     public void writeReceipt(Order order) {
 
         LocalDateTime now = LocalDateTime.now();

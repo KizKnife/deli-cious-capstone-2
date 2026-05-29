@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-    private final Scanner scanner = new Scanner(System.in);
-    private final MenuService menuService = new MenuService(scanner);
-    private final SpecialtySandwichRegistry specialtyRegistry = new SpecialtySandwichRegistry();
-    private final SandwichService sandwichService = new SandwichService();
-    private final DrinkService drinkService = new DrinkService();
-    private final ChipsService chipsService = new ChipsService();
+    private final Scanner scanner = new Scanner(System.in); // Scanner
+    private final MenuService menuService = new MenuService(scanner); // Menu Services
+    private final SpecialtySandwichRegistry specialtyRegistry = new SpecialtySandwichRegistry(); // Specialty Sandwich Registry
+    private final SandwichService sandwichService = new SandwichService(); // Sandwich Services
+    private final DrinkService drinkService = new DrinkService(); // Drink Services
+    private final ChipsService chipsService = new ChipsService(); // Chips Services
 
+    // Displays menu and navigation to create new orders or exit
     public void display() {
         while (true) {
             System.out.printf(
@@ -38,6 +39,8 @@ public class UserInterface {
         }
     }
 
+    // Creates new orders
+    // Allows user to add items, review order, or checkout until the order is completed or canceled
     public void createNewOrder() {
         Order order = new Order();
 
@@ -91,6 +94,7 @@ public class UserInterface {
         }
     }
 
+    // Calls SandwichService to build sandwich inside MenuService
     public void addSandwich(Order order) {
         int sandwichSize = menuService.selectSandwichSize();
         if (sandwichSize == 0) return;
@@ -111,6 +115,7 @@ public class UserInterface {
         System.out.println("Sandwich has been added.");
     }
 
+    // Adds prebuilt specialty sandwich to the order using a registry of SandwichBuilder
     private void addSpecialtySandwich(Order order) {
 
         System.out.println("\n===== SPECIALTY SANDWICHES =====");
@@ -134,9 +139,12 @@ public class UserInterface {
         System.out.println("Specialty sandwich added.");
     }
 
+    // User input drink size and flavor, creates drink using DrinkService, adds to order
     public void addDrink(Order order) {
         String drinkSize;
         String drinkType;
+
+        System.out.printf("\n===== DRINK =====");
 
         while (true) {
             System.out.printf(
@@ -175,7 +183,10 @@ public class UserInterface {
         System.out.println("Drink has been added.");
     }
 
+    // User input chips flavor, creates chips using ChipsService, adds to order
     public void addChips(Order order) {
+        System.out.printf("\n===== CHIPS =====");
+
         while (true) {
             System.out.printf(
                     "%n1. Add Chips%n" +
@@ -202,6 +213,7 @@ public class UserInterface {
         }
     }
 
+    // Displays  order for user review before checkout
     public void checkOrder(Order order) {
         System.out.print("\n===== ORDER =====");
 
@@ -221,6 +233,8 @@ public class UserInterface {
         }
     }
 
+    // Displays full order and total price, then allows user to confirm or cancel the order
+    // If confirmed, receipt is generated and saved to a file inside deli-cious/receipts
     public void checkout(Order order) {
         if (!order.getSandwiches().isEmpty() || !order.getDrinks().isEmpty() || !order.getChips().isEmpty()) {
             System.out.print("\n===== CHECKOUT =====");

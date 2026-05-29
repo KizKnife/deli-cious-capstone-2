@@ -8,13 +8,18 @@ import java.util.Scanner;
 
 public class MenuService {
 
+    // Scanner for user input
     private final Scanner scanner;
 
     public MenuService(Scanner scanner) {
         this.scanner = scanner;
     }
 
+    // Prompts user to select sandwich size (4", 8", or 12"), returns sandwich size
+    // Returns 0 if the user exits
     public int selectSandwichSize() {
+        System.out.printf("\n===== SIZE =====");
+
         while (true) {
             System.out.printf(
                     "%n1. 4\"%n" +
@@ -43,7 +48,10 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select a bread type, returns bread type
     public String selectBreadType() {
+        System.out.printf("\n===== BREAD TYPE =====");
+
         while (true) {
             System.out.printf(
                     "%n1. White%n" +
@@ -72,7 +80,10 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select if sandwich should be toasted, returns true or false
     public boolean selectToasted() {
+        System.out.printf("\n===== TOASTED =====");
+
         while (true) {
             System.out.printf(
                     "%n1. Yes%n" +
@@ -93,8 +104,11 @@ public class MenuService {
         }
     }
 
+    // Allows user to add or remove toppings for a sandwich, returns a list of selected toppings
     public List<Topping> selectToppings(int sandwichSize) {
         List<Topping> selectedToppings = new ArrayList<>();
+
+        System.out.printf("\n===== TOPPING =====");
 
         while (true) {
             System.out.printf(
@@ -123,6 +137,8 @@ public class MenuService {
         }
     }
 
+    // Prompts user through selecting a toppings, returns a Topping object.
+    // Includes category, type, and/or extra options
     private Topping selectTopping(int sandwichSize) {
         String toppingType = selectToppingCategory();
 
@@ -157,16 +173,18 @@ public class MenuService {
         );
     }
 
+    // Prompts user to choose topping category (meat, cheese, regular, sauce, or side)
+    // Returns the selected category as string
     private String selectToppingCategory() {
         while (true) {
             System.out.printf(
                     "%n1. Meats%n" +
-                            "2. Cheese%n" +
-                            "3. Regular Toppings%n" +
-                            "4. Sauces%n" +
-                            "5. Sides%n" +
-                            "0. Exit%n" +
-                            "Toppings: "
+                    "2. Cheese%n" +
+                    "3. Regular Toppings%n" +
+                    "4. Sauces%n" +
+                    "5. Sides%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
             );
 
             switch (scanner.nextLine()) {
@@ -181,17 +199,18 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select meat topping, returns selected meat
     private String selectMeat() {
         while (true) {
             System.out.printf(
                     "%n1. Steak%n" +
-                            "2. Ham%n" +
-                            "3. Salami%n" +
-                            "4. Roast Beef%n" +
-                            "5. Chicken%n" +
-                            "6. Bacon%n" +
-                            "0. Exit%n" +
-                            "Toppings: "
+                    "2. Ham%n" +
+                    "3. Salami%n" +
+                    "4. Roast Beef%n" +
+                    "5. Chicken%n" +
+                    "6. Bacon%n" +
+                    "0. Exit%n" +
+                    "Toppings: "
             );
 
             switch (scanner.nextLine()) {
@@ -207,6 +226,7 @@ public class MenuService {
         }
     }
 
+    // Prompts user for extra topping, returns true or false
     private boolean askExtra() {
         while (true) {
             System.out.printf(
@@ -223,6 +243,7 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select cheese topping, returns selected cheese
     private String selectCheese() {
         while (true) {
             System.out.printf(
@@ -245,6 +266,7 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select regular topping, returns selected regular topping
     private String selectRegularTopping() {
         while (true) {
             System.out.printf(
@@ -277,6 +299,7 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select sauce topping, returns selected sauce
     private String selectSauce() {
         while (true) {
             System.out.printf(
@@ -303,6 +326,7 @@ public class MenuService {
         }
     }
 
+    // Prompts user to select side option, returns selected side
     private String selectSide() {
         while (true) {
             System.out.printf(
@@ -331,6 +355,7 @@ public class MenuService {
         }
     }
 
+    // Displays the current list of toppings, allows user to remove a selected topping from the list
     private void removeTopping(List<Topping> toppings) {
         if (toppings.isEmpty()) {
             System.out.printf("%nNo toppings to remove%n");
