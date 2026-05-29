@@ -1,6 +1,9 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.model.*;
+import com.pluralsight.service.ChipsService;
+import com.pluralsight.service.DrinkService;
+import com.pluralsight.service.SandwichService;
 import com.pluralsight.util.ReceiptWriter;
 
 import java.util.ArrayList;
@@ -8,12 +11,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-    private List<Sandwich> sandwiches = new ArrayList<>();
-    private List<Drink> drinks = new ArrayList<>();
-    private List<Chips> chips = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
     private final MenuService menuService = new MenuService(scanner);
     private final SpecialtySandwichRegistry specialtyRegistry = new SpecialtySandwichRegistry();
+    private final SandwichService sandwichService = new SandwichService();
+    private final DrinkService drinkService = new DrinkService();
+    private final ChipsService chipsService = new ChipsService();
 
     public void display() {
         while (true) {
@@ -89,23 +92,23 @@ public class UserInterface {
     }
 
     public void addSandwich(Order order) {
-        int sandwichSize = 0;
-        String breadType = null;
-        boolean isToasted;
-        List<Topping> toppings = new ArrayList<>();
+        int sandwichSize = menuService.selectSandwichSize();
+        if (sandwichSize == 0) return;
 
-        sandwichSize = menuService.selectSandwichSize();
-        breadType = menuService.selectBreadType();
-        isToasted = menuService.selectToasted();
-        toppings = menuService.selectToppings(sandwichSize);
+        String breadType = menuService.selectBreadType();
+        boolean isToasted = menuService.selectToasted();
+        List<Topping> toppings = menuService.selectToppings(sandwichSize);
 
-        if (sandwichSize != 0) {
-            Sandwich sandwich = new Sandwich(sandwichSize, breadType, isToasted, new ArrayList<>(toppings));
+        Sandwich sandwich = sandwichService.createSandwich(
+                sandwichSize,
+                breadType,
+                isToasted,
+                new ArrayList<>(toppings)
+        );
 
-            order.addSandwich(sandwich);
+        order.addSandwich(sandwich);
 
-            System.out.println("Sandwich has been added.");
-        }
+        System.out.println("Sandwich has been added.");
     }
 
     private void addSpecialtySandwich(Order order) {
@@ -132,8 +135,8 @@ public class UserInterface {
     }
 
     public void addDrink(Order order) {
-        String drinkSize = "";
-        String drinkType = "";
+        String drinkSize;
+        String drinkType;
 
         while (true) {
             System.out.printf(
@@ -160,22 +163,19 @@ public class UserInterface {
                     System.out.println("Invalid option");
                     continue;
             }
-
             break;
         }
 
         System.out.print("\nFlavor: ");
         drinkType = scanner.nextLine();
 
-        Drink drink = new Drink(drinkSize, drinkType);
-
+        Drink drink = drinkService.createDrink(drinkSize, drinkType);
         order.addDrink(drink);
 
         System.out.println("Drink has been added.");
     }
 
     public void addChips(Order order) {
-
         while (true) {
             System.out.printf(
                     "%n1. Add Chips%n" +
@@ -189,8 +189,7 @@ public class UserInterface {
                     System.out.print("\nChip flavor: ");
                     String chipsType = scanner.nextLine();
 
-                    Chips chips = new Chips(chipsType);
-
+                    Chips chips = chipsService.createChips(chipsType);
                     order.addChip(chips);
 
                     System.out.println("Chips have been added.");
@@ -252,35 +251,17 @@ public class UserInterface {
 
             switch (choice) {
 
-                case 1 -> {
+                case 1:
                     ReceiptWriter writer = new ReceiptWriter();
                     writer.writeReceipt(order);
                     System.out.printf("Order confirmed! Receipt saved%n%n");
-                }
-
-                case 0 -> {
+                case 0:
                     System.out.printf("Order cancelled%n");
-                }
-
-                default -> {
+                default:
                     System.out.printf("Invalid choice. Returning to menu%n");
-                }
             }
         } else {
             System.out.printf("Error! Order must contain chips or a drink!%n%n");
         }
     }
-
-    public List<Sandwich> getSandwiches() {
-        return sandwiches;
-    }
-
-    public List<Drink> getDrinks() {
-        return drinks;
-    }
-
-    public List<Chips> getChips() {
-        return chips;
-    }
-
 }
